@@ -132,17 +132,21 @@ export default function Inquire() {
         EMAILJS_PUBLIC_KEY
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_CONFIRMATION_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
-
       setSubmitted(true);
       setForm(emptyForm);
+
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_CONFIRMATION_TEMPLATE_ID,
+          templateParams,
+          EMAILJS_PUBLIC_KEY
+        );
+      } catch (confirmationError) {
+        console.log('Confirmation email failed:', confirmationError);
+      }
     } catch (error) {
       setSubmitError(
         'Something went wrong while submitting your inquiry. Please email us directly at info@everaftereditfl.com.'
