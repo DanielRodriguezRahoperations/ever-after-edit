@@ -7,6 +7,8 @@
 import { useState } from 'react';
 import Button from '../components/Button';
 
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@everaftereditfl.com';
+
 const budgetOptions = [
   '$500 – $1,000',
   '$1,000 – $2,500',
@@ -48,6 +50,8 @@ const emptyForm: FormState = {
 export default function Inquire() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [errors, setErrors] = useState<Partial<FormState>>({});
 
   const validate = (): boolean => {
@@ -68,6 +72,8 @@ export default function Inquire() {
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    setSubmitError('');
+
     if (errors[name as keyof FormState]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -80,12 +86,49 @@ export default function Inquire() {
         ? prev.interests.filter((i) => i !== option)
         : [...prev.interests, option],
     }));
+    setSubmitError('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
+
+    if (!validate()) return;
+
+    setSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `New Wedding Inquiry from ${form.name}`,
+          _template: 'table',
+          name: form.name,
+          email: form.email,
+          weddingDate: form.weddingDate,
+          location: form.location,
+          budget: form.budget,
+          interests: form.interests.length ? form.interests.join(', ') : 'None selected',
+          vision: form.vision,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submission failed.');
+      }
+
       setSubmitted(true);
+      setForm(emptyForm);
+    } catch (error) {
+      setSubmitError(
+        'Something went wrong while submitting your inquiry. Please email us directly at info@everaftereditfl.com.'
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -109,12 +152,12 @@ export default function Inquire() {
               We take on a limited number of commissions each season to ensure every piece is fully custom, intentionally designed, and built to the highest standard.
             </p>
             <p className="text-ink-secondary font-body text-base leading-relaxed mb-10">
-              Complete the inquiry form and we'll be in touch within 2–3 business days to begin the design conversation.
+              Complete the inquiry form and we'll be in touch within 24–48 hours to begin the design conversation.
             </p>
 
             <div className="space-y-6 border-t border-border pt-10">
               {[
-                { label: 'Turnaround', value: 'All inquiries receive a response within 2–3 business days.' },
+                { label: 'Turnaround', value: 'All inquiries receive a response within 24–48 hours.' },
                 { label: 'Availability', value: 'We book a limited number of projects each season and recommend inquiring early to secure your date.' },
                 { label: 'Process', value: 'Every project begins with a design consultation where we learn your vision, venue, and overall aesthetic. From there, we develop a fully custom concept, refine the details, and bring each piece to life through thoughtful design and build.' },
               ].map((item) => (
@@ -135,13 +178,16 @@ export default function Inquire() {
               <div className="bg-cream-secondary border border-border p-12 md:p-14">
                 <p className="section-label mb-5">Inquiry Received</p>
                 <h2 className="font-heading text-2xl md:text-3xl text-ink mb-6 leading-snug">
-                  Thank you, {form.name.split(' ')[0]}.
+                  Congratulations — your inquiry has been received.
                 </h2>
-                <p className="text-ink-secondary font-body text-base leading-relaxed mb-8">
-                  We've received your inquiry and will be in touch within 2–3 business days to discuss your project.
+                <p className="text-ink-secondary font-body text-base leading-relaxed mb-5">
+                  Thank you for reaching out to The Ever After Edit. We're honored to be considered for your wedding day.
+                </p>
+                <p className="text-ink-secondary font-body text-base leading-relaxed mb-5">
+                  Our team will review your details and contact you within 24–48 hours.
                 </p>
                 <p className="text-ink-secondary font-body text-sm leading-relaxed">
-                  We look forward to creating something beautiful for your day.
+                  If you have any additional questions, please email us at info@everaftereditfl.com.
                 </p>
               </div>
             ) : (
@@ -291,9 +337,20 @@ export default function Inquire() {
                   )}
                 </div>
 
+                {submitError && (
+                  <p className="text-accent text-sm font-body leading-relaxed">
+                    {submitError}
+                  </p>
+                )}
+
                 <div className="pt-2">
-                  <Button type="submit" variant="primary" className="w-full text-center justify-center">
-                    Submit Your Inquiry
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="w-full text-center justify-center"
+                    disabled={submitting}
+                  >
+                    {submitting ? 'Submitting...' : 'Submit Your Inquiry'}
                   </Button>
                   <p className="text-ink-secondary font-body text-xs mt-4 leading-relaxed">
                     This is a custom project inquiry — we'll review your details and follow up to begin the design process.
