@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Button from '../components/Button';
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@everaftereditfl.com';
+const WEBSITE_URL = 'https://www.everaftereditfl.com';
 
 const budgetOptions = [
   '$500 – $1,000',
@@ -30,6 +31,7 @@ const interestOptions = [
 interface FormState {
   name: string;
   email: string;
+  phone: string;
   weddingDate: string;
   location: string;
   budget: string;
@@ -40,6 +42,7 @@ interface FormState {
 const emptyForm: FormState = {
   name: '',
   email: '',
+  phone: '',
   weddingDate: '',
   location: '',
   budget: '',
@@ -56,13 +59,22 @@ export default function Inquire() {
 
   const validate = (): boolean => {
     const newErrors: Partial<FormState> = {};
+
     if (!form.name.trim()) newErrors.name = 'Your name is required.';
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = 'A valid email address is required.';
+    }
+
+    if (!form.phone.trim()) {
+      newErrors.phone = 'A phone number is required.';
+    }
+
     if (!form.weddingDate) newErrors.weddingDate = 'Please provide your wedding date.';
     if (!form.location.trim()) newErrors.location = 'Please include your venue or location.';
     if (!form.budget) newErrors.budget = 'Please select an approximate budget.';
     if (!form.vision.trim()) newErrors.vision = 'Please tell us a little about your vision.';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -71,6 +83,7 @@ export default function Inquire() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
     setForm((prev) => ({ ...prev, [name]: value }));
     setSubmitError('');
 
@@ -107,8 +120,21 @@ export default function Inquire() {
         body: JSON.stringify({
           _subject: `New Wedding Inquiry from ${form.name}`,
           _template: 'table',
+          _replyto: form.email,
+          _autoresponse: `Congratulations — your inquiry has been received.
+
+Thank you for reaching out to The Ever After Edit. We're honored to be considered for your wedding day.
+
+Our team will review your details and contact you within 24–48 hours.
+
+You can visit our website here:
+${WEBSITE_URL}
+
+The Ever After Edit
+info@everaftereditfl.com`,
           name: form.name,
           email: form.email,
+          phone: form.phone,
           weddingDate: form.weddingDate,
           location: form.location,
           budget: form.budget,
@@ -140,7 +166,6 @@ export default function Inquire() {
 
   return (
     <main className="pt-16 md:pt-20">
-      {/* Page Header */}
       <section className="py-20 md:py-28 bg-cream">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-12 md:gap-24 items-start">
           <div>
@@ -204,14 +229,12 @@ export default function Inquire() {
                     placeholder="Your full name"
                     className={inputBase}
                   />
-                  {errors.name && (
-                    <p className="text-accent text-xs font-body mt-2">{errors.name}</p>
-                  )}
+                  {errors.name && <p className="text-accent text-xs font-body mt-2">{errors.name}</p>}
                 </div>
 
                 <div>
                   <label className="block font-body text-xs tracking-widest uppercase text-ink-secondary mb-2">
-                    Email Address
+                    Email Address *
                   </label>
                   <input
                     type="email"
@@ -220,10 +243,25 @@ export default function Inquire() {
                     onChange={handleChange}
                     placeholder="you@email.com"
                     className={inputBase}
+                    required
                   />
-                  {errors.email && (
-                    <p className="text-accent text-xs font-body mt-2">{errors.email}</p>
-                  )}
+                  {errors.email && <p className="text-accent text-xs font-body mt-2">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label className="block font-body text-xs tracking-widest uppercase text-ink-secondary mb-2">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="Your phone number"
+                    className={inputBase}
+                    required
+                  />
+                  {errors.phone && <p className="text-accent text-xs font-body mt-2">{errors.phone}</p>}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -290,9 +328,7 @@ export default function Inquire() {
                   <p className="text-ink-secondary font-body text-xs mt-2 leading-relaxed">
                     Most of our custom projects fall between $1,500–$5,000+ depending on scope.
                   </p>
-                  {errors.budget && (
-                    <p className="text-accent text-xs font-body mt-2">{errors.budget}</p>
-                  )}
+                  {errors.budget && <p className="text-accent text-xs font-body mt-2">{errors.budget}</p>}
                 </div>
 
                 <div>
@@ -332,9 +368,7 @@ export default function Inquire() {
                     placeholder="Tell us about your wedding aesthetic, the pieces you're interested in, and anything inspiring your vision."
                     className={`${inputBase} resize-none`}
                   />
-                  {errors.vision && (
-                    <p className="text-accent text-xs font-body mt-2">{errors.vision}</p>
-                  )}
+                  {errors.vision && <p className="text-accent text-xs font-body mt-2">{errors.vision}</p>}
                 </div>
 
                 {submitError && (
@@ -362,7 +396,6 @@ export default function Inquire() {
         </div>
       </section>
 
-      {/* Trust Section */}
       <section className="bg-cream-secondary py-20 border-t border-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
