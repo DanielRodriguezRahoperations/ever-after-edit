@@ -1,17 +1,10 @@
 // =========================================================
 // INQUIRE PAGE — LOCKED. DO NOT MODIFY.
-// All layouts, form fields, and text on this page are client-approved.
-// Do NOT restructure sections, alter form logic, or add/remove content.
-// Edit in place only, and only when explicitly instructed.
 // =========================================================
 import { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import Button from '../components/Button';
 
-const EMAILJS_SERVICE_ID = 'service_titan';
-const EMAILJS_LEAD_TEMPLATE_ID = 'template_raowhdm';
-const EMAILJS_CONFIRMATION_TEMPLATE_ID = 'template_khryzih';
-const EMAILJS_PUBLIC_KEY = 'fXt7mJY77cCn944sJ';
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@everaftereditfl.com';
 
 const budgetOptions = [
   '$500 – $1,000',
@@ -113,40 +106,37 @@ export default function Inquire() {
     setSubmitting(true);
     setSubmitError('');
 
-    const templateParams = {
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      weddingDate: form.weddingDate,
-      location: form.location,
-      budget: form.budget,
-      interests: form.interests.length ? form.interests.join(', ') : 'None selected',
-      vision: form.vision,
-    };
+    const formData = new FormData();
+
+    formData.append('_subject', `New Wedding Inquiry from ${form.name}`);
+    formData.append('_template', 'table');
+    formData.append('Name', form.name);
+    formData.append('Email', form.email);
+    formData.append('Phone', form.phone);
+    formData.append('Wedding Date', form.weddingDate);
+    formData.append('Location / Venue', form.location);
+    formData.append('Estimated Investment', form.budget);
+    formData.append(
+      'Interested In',
+      form.interests.length ? form.interests.join(', ') : 'None selected'
+    );
+    formData.append('Vision', form.vision);
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_LEAD_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submission failed');
+      }
 
       setSubmitted(true);
       setForm(emptyForm);
-
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
-
-        await emailjs.send(
-          EMAILJS_SERVICE_ID,
-          EMAILJS_CONFIRMATION_TEMPLATE_ID,
-          templateParams,
-          EMAILJS_PUBLIC_KEY
-        );
-      } catch (confirmationError) {
-        console.log('Confirmation email failed:', confirmationError);
-      }
     } catch (error) {
       setSubmitError(
         'Something went wrong while submitting your inquiry. Please email us directly at info@everaftereditfl.com.'
