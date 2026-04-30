@@ -106,6 +106,44 @@ export default function About() {
         </div>
       </SectionWrapper>
 
+      {/* NEW SECTION — FOUNDERS */}
+      <SectionWrapper className="bg-cream">
+        <div className="grid md:grid-cols-2 gap-16 md:gap-28 items-center">
+          {/* IMAGE */}
+          <div className="overflow-hidden bg-stone-50" style={{ aspectRatio: '4/5' }}>
+            <img
+              src="/couple.jpeg"
+              alt="Riley and Travis Zawisza founders of The Ever After Edit"
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* TEXT */}
+          <div>
+            <p className="section-label mb-5">The Founders</p>
+
+            <div className="space-y-5 text-ink-secondary font-body text-base leading-relaxed">
+              <p>
+                The Ever After Edit was founded by husband and wife, Riley and Travis Zawisza.
+              </p>
+
+              <p>
+                What began with designing the details for their own wedding quickly became something more — a shared vision for creating pieces that feel as intentional as the day itself.
+              </p>
+
+              <p>
+                Riley brings a background in design and styling, with an eye for detail and storytelling. Travis, a U.S. Army veteran and skilled craftsman, brings each concept to life through thoughtfully built, custom pieces.
+              </p>
+
+              <p>
+                Together, they create work that is both personal and enduring — designed to be felt, remembered, and photographed beautifully.
+              </p>
+            </div>
+          </div>
+        </div>
+      </SectionWrapper>
+
       {/* Values */}
       <SectionWrapper className="bg-cream-secondary">
         <p className="section-label mb-5">What Guides Us</p>
