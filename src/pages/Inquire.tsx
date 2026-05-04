@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import Button from '../components/Button';
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@everaftereditfl.com';
@@ -42,6 +43,8 @@ const emptyForm: FormState = {
   interests: [],
   vision: '',
 };
+
+const ease = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 export default function Inquire() {
   const [form, setForm] = useState<FormState>(emptyForm);
@@ -151,42 +154,130 @@ export default function Inquire() {
 
   return (
     <main className="pt-16 md:pt-20">
+
+      {/* HERO */}
+      <section className="bg-ink overflow-hidden py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid md:grid-cols-2 gap-12 items-end">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease }}
+            >
+              <p className="text-accent text-xs tracking-[0.4em] uppercase font-body mb-6">Custom Commissions</p>
+              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl text-cream leading-[0.88]">
+                Begin Your<br />
+                <em className="text-accent">Inquiry.</em>
+              </h1>
+            </motion.div>
+            <motion.p
+              className="text-cream/55 font-body text-base leading-relaxed max-w-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.9, ease, delay: 0.35 }}
+            >
+              We take on a limited number of commissions each season. Every piece is fully custom, intentionally designed, and built to the highest standard.
+            </motion.p>
+          </div>
+
+          <motion.div
+            className="mt-16 md:mt-20 grid grid-cols-3 border-t border-white/10 pt-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease, delay: 0.5 }}
+          >
+            {[
+              { stat: '24–48h', label: 'Response Time' },
+              { stat: 'Limited', label: 'Bookings Per Season' },
+              { stat: '100%', label: 'Custom Design' },
+            ].map((item, i) => (
+              <div key={item.label} className={`pr-8 ${i > 0 ? 'pl-8 border-l border-white/10' : ''}`}>
+                <p className="font-heading text-3xl md:text-4xl text-accent mb-2">{item.stat}</p>
+                <p className="text-cream/40 font-body text-xs uppercase tracking-widest">{item.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FORM + INFO */}
       <section className="py-20 md:py-28 bg-cream">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-12 md:gap-24 items-start">
-          <div>
-            <p className="section-label mb-5">Custom Commissions</p>
-            <h1 className="font-heading text-4xl md:text-5xl text-ink leading-tight mb-8">
-              Let's create something extraordinary together.
-            </h1>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-16 md:gap-24 items-start">
+
+          {/* Info column */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1, ease }}
+          >
+            <h2 className="font-heading text-3xl sm:text-4xl text-ink leading-tight mb-8">
+              Let's create something<br />
+              <em>extraordinary together.</em>
+            </h2>
             <p className="text-ink-secondary font-body text-base leading-relaxed mb-5">
-              We take on a limited number of commissions each season to ensure every piece is fully custom, intentionally designed, and built to the highest standard.
-            </p>
-            <p className="text-ink-secondary font-body text-base leading-relaxed mb-10">
               Complete the inquiry form and we'll be in touch within 24–48 hours to begin the design conversation.
             </p>
+            <p className="text-ink-secondary font-body text-base leading-relaxed mb-10">
+              Every project begins with a one-on-one consultation — no templates, no rush, only considered work.
+            </p>
 
-            <div className="space-y-6 border-t border-border pt-10">
+            <div className="space-y-8 border-t border-border pt-10">
               {[
-                { label: 'Turnaround', value: 'All inquiries receive a response within 24–48 hours.' },
-                { label: 'Availability', value: 'We book a limited number of projects each season and recommend inquiring early to secure your date.' },
-                { label: 'Process', value: 'Every project begins with a design consultation where we learn your vision, venue, and overall aesthetic. From there, we develop a fully custom concept, refine the details, and bring each piece to life through thoughtful design and build.' },
-              ].map((item) => (
-                <div key={item.label}>
-                  <p className="text-ink font-body text-xs tracking-widest uppercase mb-1">
+                {
+                  label: 'Turnaround',
+                  value: 'All inquiries receive a response within 24–48 hours.',
+                },
+                {
+                  label: 'Availability',
+                  value: 'We book a limited number of projects each season and recommend inquiring early to secure your date.',
+                },
+                {
+                  label: 'Process',
+                  value: 'Every project begins with a design consultation where we learn your vision, venue, and overall aesthetic. From there, we develop a fully custom concept, refine the details, and bring each piece to life.',
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, ease, delay: i * 0.1 }}
+                >
+                  <p className="text-ink font-body text-xs tracking-widest uppercase mb-2">
                     {item.label}
                   </p>
                   <p className="text-ink-secondary font-body text-sm leading-relaxed">
                     {item.value}
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
 
-          <div>
+            <div className="mt-12 p-8 bg-cream-secondary border border-border">
+              <p className="text-ink font-body text-xs tracking-widest uppercase mb-3">Direct Contact</p>
+              <p className="text-ink-secondary font-body text-sm leading-relaxed">
+                Prefer to reach out directly? Email us at{' '}
+                <a
+                  href="mailto:info@everaftereditfl.com"
+                  className="text-accent hover:underline underline-offset-4 transition-colors"
+                >
+                  info@everaftereditfl.com
+                </a>
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Form column */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1, ease, delay: 0.15 }}
+          >
             {submitted ? (
               <div className="bg-cream-secondary border border-border p-12 md:p-14">
-                <p className="section-label mb-5">Inquiry Received</p>
+                <p className="text-accent text-xs tracking-[0.4em] uppercase font-body mb-5">Inquiry Received</p>
                 <h2 className="font-heading text-2xl md:text-3xl text-ink mb-6 leading-snug">
                   Congratulations — your inquiry has been received.
                 </h2>
@@ -202,6 +293,7 @@ export default function Inquire() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+
                 <div>
                   <label className="block font-body text-xs tracking-widest uppercase text-ink-secondary mb-2">
                     Full Name
@@ -377,13 +469,14 @@ export default function Inquire() {
                 </div>
               </form>
             )}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="bg-cream-secondary py-20 border-t border-border">
+      {/* STATS */}
+      <section className="bg-ink py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-white/10">
             {[
               {
                 stat: 'Limited',
@@ -400,14 +493,21 @@ export default function Inquire() {
                 label: 'From Concept to Delivery',
                 note: 'One-on-one consultation and white-glove delivery.',
               },
-            ].map((item) => (
-              <div key={item.label}>
-                <p className="font-heading text-4xl md:text-5xl text-accent mb-2">{item.stat}</p>
-                <p className="font-body text-xs tracking-widest uppercase text-ink mb-3">
+            ].map((item, i) => (
+              <motion.div
+                key={item.label}
+                className={`py-10 md:py-0 md:px-10 first:pl-0 last:pr-0 border-b md:border-b-0 md:border-r border-white/10 last:border-0`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease, delay: i * 0.1 }}
+              >
+                <p className="font-heading text-4xl md:text-5xl text-accent mb-3">{item.stat}</p>
+                <p className="font-body text-xs tracking-widest uppercase text-cream/50 mb-4">
                   {item.label}
                 </p>
-                <p className="text-ink-secondary font-body text-sm leading-relaxed">{item.note}</p>
-              </div>
+                <p className="text-cream/40 font-body text-sm leading-relaxed">{item.note}</p>
+              </motion.div>
             ))}
           </div>
         </div>

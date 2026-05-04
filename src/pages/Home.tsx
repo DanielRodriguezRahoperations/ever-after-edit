@@ -325,18 +325,20 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
-              {services.map((service, index) => (
-                <div key={service.title} className={`overflow-hidden rounded-[2rem] bg-[#F3EEE8] ${index === 1 ? 'md:translate-y-16' : ''}`}>
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                    style={{ objectPosition: service.position }}
-                  />
+            <div className="grid grid-cols-2 gap-4 items-start">
+              <div className="flex flex-col gap-4">
+                <div className="aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#F3EEE8]">
+                  <img src={services[0].image} alt={services[0].title} loading="lazy" className="h-full w-full object-cover" style={{ objectPosition: services[0].position }} />
                 </div>
-              ))}
+                <div className="aspect-[4/3] overflow-hidden rounded-[2rem] bg-[#F3EEE8]">
+                  <img src={services[2].image} alt={services[2].title} loading="lazy" className="h-full w-full object-cover" style={{ objectPosition: services[2].position }} />
+                </div>
+              </div>
+              <div className="pt-8">
+                <div className="aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#F3EEE8]">
+                  <img src={services[1].image} alt={services[1].title} loading="lazy" className="h-full w-full object-cover" style={{ objectPosition: services[1].position }} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
