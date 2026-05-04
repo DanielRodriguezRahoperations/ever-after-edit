@@ -52,6 +52,12 @@ const categories = [
 ];
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number];
+const sectionEase = { duration: 0.9, ease };
+
+const clipUp = {
+  hidden: { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
+  visible: { clipPath: 'inset(0% 0 0 0)', opacity: 1 },
+};
 
 export default function SignaturePieces() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -82,94 +88,93 @@ export default function SignaturePieces() {
   return (
     <main className="pt-16 md:pt-20">
 
-      {/* HERO */}
-      <section className="bg-cream py-20 md:py-28 overflow-hidden">
+      {/* ─── HERO ─────────────────────────────────────────────── */}
+      <section className="bg-ink py-24 md:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid md:grid-cols-[1fr_auto] gap-8 items-end border-b border-border pb-14">
+          <div className="grid md:grid-cols-2 gap-12 items-end border-b border-white/10 pb-16">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease }}
             >
-              <p className="text-accent text-xs tracking-[0.35em] uppercase font-body mb-5">Rentals & Builds</p>
-              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-ink leading-[0.88]">
+              <p className="text-accent text-[10px] tracking-[0.5em] uppercase font-body mb-6">Rentals & Builds</p>
+              <h1 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] text-cream leading-[0.88]">
                 Signature
-                <span className="block italic text-accent">Pieces</span>
+                <br />
+                <em className="text-accent">Pieces.</em>
               </h1>
             </motion.div>
-            <motion.p
-              className="text-ink-secondary font-body text-base leading-relaxed max-w-sm"
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.9, ease, delay: 0.3 }}
+              transition={{ duration: 0.9, ease, delay: 0.35 }}
             >
-              A curated collection of our most distinctive installations. Each piece tells a story. Each moment, a memory.
-            </motion.p>
+              <p className="text-cream/50 font-body text-base leading-relaxed max-w-sm md:ml-auto">
+                A curated collection of our most distinctive installations. Each piece tells a story. Each moment, a memory.
+              </p>
+            </motion.div>
           </div>
 
-          {/* Count */}
           <motion.div
-            className="flex items-center gap-6 pt-8"
+            className="flex items-center gap-8 pt-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <span className="font-heading text-4xl text-accent">{String(categories.length).padStart(2, '0')}</span>
-            <span className="text-ink-secondary font-body text-xs uppercase tracking-widest">Collections Available</span>
+            <span className="font-heading text-5xl text-accent/30">{String(categories.length).padStart(2, '0')}</span>
+            <div className="h-px flex-1 bg-white/10 max-w-[80px]" />
+            <span className="text-cream/35 font-body text-[10px] uppercase tracking-[0.45em]">Collections Available</span>
           </motion.div>
         </div>
       </section>
 
-      {/* GALLERY GRID */}
-      <section className="bg-cream-secondary py-16 md:py-24">
+      {/* ─── GALLERY GRID ─────────────────────────────────────── */}
+      <section className="bg-cream py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {categories.map((category, index) => (
               <motion.div
                 key={category.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                variants={clipUp}
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.8, ease, delay: index * 0.07 }}
-                className={index === 0 ? 'sm:col-span-2 lg:col-span-1' : ''}
+                transition={{ ...sectionEase, duration: 1.1, delay: index * 0.07 }}
               >
                 <button
                   onClick={() => openGallery(category.title)}
                   className="group w-full text-left block"
                 >
                   {/* Image */}
-                  <div className="relative overflow-hidden bg-[#F3EEE8] aspect-[4/5] border border-border">
+                  <div className="relative overflow-hidden bg-[#F3EEE8] aspect-[4/5] rounded-[1.5rem]">
                     <img
                       src={category.images[0].src}
                       alt={category.images[0].alt}
                       loading="lazy"
-                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.04]"
+                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
                     />
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/10 transition-colors duration-500" />
-                    {/* Image count badge */}
+                    <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/8 transition-colors duration-500 rounded-[1.5rem]" />
                     {category.images.length > 1 && (
-                      <div className="absolute top-4 right-4 bg-ink/80 text-cream px-3 py-1 text-xs tracking-widest uppercase font-body opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute top-4 right-4 bg-ink/70 text-cream px-3 py-1 text-[10px] tracking-widest uppercase font-body opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full">
                         {category.images.length} images
                       </div>
                     )}
-                    {/* View prompt */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ink/60 to-transparent py-6 px-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                      <p className="text-cream font-body text-xs uppercase tracking-[0.3em]">View Collection</p>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ink/55 to-transparent py-7 px-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 rounded-b-[1.5rem]">
+                      <p className="text-cream font-body text-[10px] uppercase tracking-[0.35em]">View Collection</p>
                     </div>
                   </div>
 
                   {/* Label */}
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-5 flex items-center justify-between">
                     <div>
-                      <p className="text-accent text-[10px] uppercase tracking-[0.3em] font-body mb-1">
+                      <p className="text-accent text-[10px] uppercase tracking-[0.35em] font-body mb-1">
                         {String(index + 1).padStart(2, '0')}
                       </p>
                       <h3 className="font-heading text-xl md:text-2xl text-ink group-hover:text-accent transition-colors duration-300">
                         {category.title}
                       </h3>
                     </div>
-                    <span className="text-ink-secondary group-hover:text-accent transition-colors duration-300 text-lg">→</span>
+                    <span className="text-ink-secondary group-hover:text-accent transition-colors duration-300 text-lg translate-x-0 group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </button>
               </motion.div>
@@ -178,7 +183,7 @@ export default function SignaturePieces() {
         </div>
       </section>
 
-      {/* LIGHTBOX */}
+      {/* ─── LIGHTBOX ─────────────────────────────────────────── */}
       <AnimatePresence>
         {openCategory && (
           <motion.div
@@ -188,19 +193,18 @@ export default function SignaturePieces() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 lg:px-12 py-5 border-b border-accent/15 flex-shrink-0">
+            <div className="flex items-center justify-between px-6 lg:px-12 py-5 border-b border-white/10 flex-shrink-0">
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.1 }}
               >
-                <p className="text-accent text-[10px] uppercase tracking-[0.35em] font-body mb-1">Collection</p>
-                <h2 className="font-heading text-xl md:text-3xl text-cream">{openCategory.title}</h2>
+                <p className="text-accent text-[10px] uppercase tracking-[0.4em] font-body mb-1">Collection</p>
+                <h2 className="font-heading text-2xl md:text-3xl text-cream">{openCategory.title}</h2>
               </motion.div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-5">
                 {openCategory.images.length > 1 && (
-                  <p className="text-cream/40 font-body text-xs tracking-widest hidden sm:block">
+                  <p className="text-cream/35 font-body text-xs tracking-widest hidden sm:block">
                     {activeImageIndex + 1} / {openCategory.images.length}
                   </p>
                 )}
@@ -209,12 +213,11 @@ export default function SignaturePieces() {
                   className="text-cream/50 hover:text-cream transition-colors p-2"
                   aria-label="Close gallery"
                 >
-                  <X size={24} />
+                  <X size={22} />
                 </button>
               </div>
             </div>
 
-            {/* Image */}
             <div className="flex-1 relative flex items-center justify-center p-6 lg:p-12 min-h-0">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -223,7 +226,7 @@ export default function SignaturePieces() {
                   initial={{ opacity: 0, scale: 0.97 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.97 }}
-                  transition={{ duration: 0.35 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <img
                     src={openCategory.images[activeImageIndex].src}
@@ -234,36 +237,34 @@ export default function SignaturePieces() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Prev / Next */}
               {openCategory.images.length > 1 && (
                 <>
                   <button
                     onClick={prev}
-                    className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors p-3 bg-ink/40 hover:bg-ink/70"
+                    className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors p-3 bg-ink/40 hover:bg-ink/70 rounded-full"
                     aria-label="Previous image"
                   >
-                    <ChevronLeft size={24} />
+                    <ChevronLeft size={22} />
                   </button>
                   <button
                     onClick={next}
-                    className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors p-3 bg-ink/40 hover:bg-ink/70"
+                    className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors p-3 bg-ink/40 hover:bg-ink/70 rounded-full"
                     aria-label="Next image"
                   >
-                    <ChevronRight size={24} />
+                    <ChevronRight size={22} />
                   </button>
                 </>
               )}
             </div>
 
-            {/* Thumbnails */}
             {openCategory.images.length > 1 && (
-              <div className="flex-shrink-0 flex gap-3 justify-center px-6 py-4 border-t border-accent/10">
+              <div className="flex-shrink-0 flex gap-3 justify-center px-6 py-4 border-t border-white/10">
                 {openCategory.images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImageIndex(i)}
-                    className={`w-14 h-14 overflow-hidden border-2 transition-colors ${
-                      i === activeImageIndex ? 'border-accent' : 'border-transparent opacity-50 hover:opacity-80'
+                    className={`w-14 h-14 overflow-hidden rounded-lg border-2 transition-all ${
+                      i === activeImageIndex ? 'border-accent' : 'border-transparent opacity-40 hover:opacity-70'
                     }`}
                   >
                     <img src={img.src} alt="" className="w-full h-full object-cover" />
@@ -275,28 +276,28 @@ export default function SignaturePieces() {
         )}
       </AnimatePresence>
 
-      {/* CTA */}
-      <section className="py-20 md:py-28 bg-cream">
+      {/* ─── CTA ──────────────────────────────────────────────── */}
+      <section className="py-20 md:py-28 bg-cream-secondary">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 border-t border-border pt-14"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.9, ease }}
+            transition={sectionEase}
           >
             <div>
-              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl text-ink mb-3 leading-snug">
-                Interested in a signature piece for your day?
+              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl text-ink mb-3 leading-[0.93]">
+                Interested in a signature piece
+                <br />
+                <em className="text-accent">for your day?</em>
               </h2>
-              <p className="text-ink-secondary font-body text-base">
+              <p className="text-ink-secondary font-body text-sm mt-4">
                 We'd love to talk through your vision.
               </p>
             </div>
             <div className="flex-shrink-0">
-              <Button to="/inquire" variant="primary">
-                Begin Your Inquiry
-              </Button>
+              <Button to="/inquire" variant="primary">Begin Your Inquiry</Button>
             </div>
           </motion.div>
         </div>
