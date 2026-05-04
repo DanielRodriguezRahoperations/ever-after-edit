@@ -78,7 +78,7 @@ const testimonials = [
   },
 ];
 
-const sectionEase = { duration: 0.85, ease: [0.16, 1, 0.3, 1] };
+const sectionEase = { duration: 0.85, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] };
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
   visible: { opacity: 1, y: 0 },
@@ -132,8 +132,8 @@ export default function Home() {
           />
         </div>
 
-        <div className="relative z-10 min-h-[calc(100vh-4rem)] flex items-center px-6 py-16 md:px-12 lg:px-20">
-          <div className="max-w-3xl">
+        <div className="relative z-10 px-6 py-16 md:px-12 lg:px-20 md:min-h-[calc(100vh-4rem)] md:flex md:items-center">
+          <div className="max-w-3xl w-full">
             <motion.div
               className="mb-8 inline-flex items-center gap-4 overflow-hidden"
               variants={fadeUp}
@@ -179,6 +179,22 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+
+        {/* Mobile hero image — shown below text, hidden on desktop */}
+        <motion.div
+          className="md:hidden relative pb-10 px-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...sectionEase, delay: 0.9 }}
+        >
+          <div className="aspect-[4/3] overflow-hidden rounded-[2rem] bg-[#F3EEE8]">
+            <img
+              src="/hero-image-new.png"
+              alt="The Ever After Edit — arched wedding welcome sign on gold easel with champagne roses and coastal view"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </motion.div>
       </motion.section>
 
       <motion.section
@@ -437,7 +453,7 @@ export default function Home() {
           <motion.img
             src="/wedding-party.png"
             alt="Wedding party"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain"
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...sectionEase, duration: 1.2, delay: 0.2 }}
