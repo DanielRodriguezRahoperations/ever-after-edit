@@ -44,4 +44,10 @@
   .btn-ghost {
     @apply inline-block px-8 py-3.5 border border-border text-ink-secondary text-xs tracking-widest uppercase font-body transition-all duration-300 hover:border-ink hover:text-ink;
   }
+
+  .scroll-animation {
+    &.initial-state {
+      opacity: 1;
+    }
+  }
 }

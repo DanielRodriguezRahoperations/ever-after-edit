@@ -1,6 +1,3 @@
-// =========================================================
-// INQUIRE PAGE — LOCKED. DO NOT MODIFY.
-// =========================================================
 import { useState } from 'react';
 import Button from '../components/Button';
 

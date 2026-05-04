@@ -1,4 +1,4 @@
-import SectionWrapper from '../components/SectionWrapper';
+import { motion } from 'framer-motion';
 import Button from '../components/Button';
 
 const featuredImages = [
@@ -78,258 +78,402 @@ const testimonials = [
   },
 ];
 
+const sectionEase = { duration: 0.85, ease: [0.16, 1, 0.3, 1] };
+const fadeUp = {
+  hidden: { opacity: 0, y: 32 },
+  visible: { opacity: 1, y: 0 },
+};
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+const slideLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0 },
+};
+const slideRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: { opacity: 1, x: 0 },
+};
+const scaleUp = {
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: { opacity: 1, scale: 1 },
+};
+
 export default function Home() {
   return (
     <main>
-      <section className="relative w-full overflow-hidden bg-cream md:min-h-screen">
-        <img
-          src="/hero-image-new.png"
-          alt="The Ever After Edit — arched wedding welcome sign on gold easel with champagne roses and coastal view"
-          className="absolute inset-0 hidden h-full w-full object-contain object-right md:block"
-        />
-
-        <div
-          className="absolute inset-0 hidden md:block"
-          style={{
-            background:
-              'linear-gradient(to right, rgba(250,247,242,0.9) 0%, rgba(250,247,242,0.68) 27%, rgba(250,247,242,0.28) 48%, rgba(250,247,242,0.04) 68%, transparent 100%)',
-          }}
-        />
-
-        <div className="block bg-cream md:hidden">
-          <div className="relative h-[58vh] min-h-[420px] w-full overflow-hidden bg-cream">
-            <img
-              src="/hero-image-new.png"
-              alt="The Ever After Edit — arched wedding welcome sign on gold easel with champagne roses and coastal view"
-              className="h-full w-full object-contain object-center"
-            />
-          </div>
+      <motion.section
+        className="relative w-full overflow-hidden bg-cream md:min-h-screen"
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        transition={sectionEase}
+      >
+        <div className="absolute inset-0 bg-cream" />
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.img
+            src="/hero-image-new.png"
+            alt="The Ever After Edit — arched wedding welcome sign on gold easel with champagne roses and coastal view"
+            className="absolute right-0 hidden h-full w-auto min-w-[1200px] object-contain md:block"
+            initial={{ opacity: 0, x: 80 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ ...sectionEase, duration: 1.1, delay: 0.2 }}
+          />
+          <motion.div
+            className="absolute inset-0 hidden md:block"
+            style={{
+              background:
+                'linear-gradient(to right, rgba(250,247,242,0.96) 0%, rgba(250,247,242,0.8) 30%, rgba(250,247,242,0.4) 55%, rgba(250,247,242,0.04) 80%, transparent 100%)',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...sectionEase, delay: 0.35 }}
+          />
         </div>
 
-        <div className="relative z-10 flex md:min-h-screen md:items-center">
-          <div className="w-full px-6 pb-12 pt-8 md:px-12 md:pb-0 md:pt-0 lg:px-20">
-            <div className="max-w-md md:max-w-xl">
-              <h1
-                className="font-heading mb-4 text-[2.35rem] leading-[1.02] text-[#1a1714] md:mb-6 md:text-5xl md:leading-snug lg:text-6xl"
-                style={{ fontWeight: 500 }}
-              >
-                <em>Designed to be noticed.</em>
-              </h1>
-
-              <p className="font-body mb-5 text-[10px] uppercase leading-loose tracking-widest text-[#3d3530] md:mb-8 md:text-xs">
-                Timeless designs. Thoughtful details.
-                <br />
-                Made to elevate your celebration
-                <br />
-                and leave a lasting impression.
-              </p>
-
-              <blockquote className="mb-7 md:mb-10">
-                <p className="font-heading mb-2 text-sm italic leading-relaxed text-[rgba(26,23,20,0.72)] md:text-base">
-                  &ldquo;The sign was the first thing our guests saw, it set the tone for the entire weekend.&rdquo;
-                </p>
-                <cite className="not-italic font-body text-xs uppercase tracking-widest text-[#3d3530]">
-                  — Madison &amp; Alex
-                </cite>
-              </blockquote>
-
-              <Button to="/inquire" variant="primary">
-                Start Your Design
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <SectionWrapper className="bg-cream">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
-          <div>
-            <p className="section-label mb-5">Our Philosophy</p>
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl text-ink leading-tight mb-6 md:mb-8">
-              Not signage.
+        <div className="relative z-10 min-h-[calc(100vh-4rem)] flex items-center px-6 py-16 md:px-12 lg:px-20">
+          <div className="max-w-3xl">
+            <motion.div
+              className="mb-8 inline-flex items-center gap-4 overflow-hidden"
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ ...sectionEase, delay: 0.45 }}
+            >
+              <span className="text-xs uppercase tracking-[0.35em] text-[#3d3530]">Signature signage</span>
+              <div className="h-px w-16 bg-accent" />
+            </motion.div>
+            <motion.h1
+              className="font-heading text-[3.9rem] leading-[0.92] tracking-[-0.03em] text-[#1a1714] sm:text-[4.8rem] md:text-[5.8rem] lg:text-[6.8rem]"
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ ...sectionEase, delay: 0.55 }}
+            >
+              Designed to be
               <br />
-              <em>Art for your wedding day.</em>
-            </h2>
-            <p className="text-ink-secondary font-body text-sm sm:text-base leading-relaxed mb-4 md:mb-5">
-              The Ever After Edit was built on a single belief: the details of your wedding day deserve the same level of craft and intention as the dress, the flowers, and the venue itself.
-            </p>
-            <p className="text-ink-secondary font-body text-sm sm:text-base leading-relaxed mb-8 md:mb-10">
-              We work with a select number of couples each season to create truly custom signage — designed from scratch, crafted with care, and delivered with an eye toward the final image.
-            </p>
-            <Button to="/about" variant="primary">
-              Our Story
-            </Button>
-          </div>
-
-          <div className="aspect-square overflow-hidden">
-            <img
-              src="/philosophy.png"
-              alt="Mr. & Mrs. Rodriguez welcome sign on gold easel with champagne roses and candlelight"
-              loading="lazy"
-              className="w-full h-full object-cover object-center"
-            />
+              unapologetically seen.
+            </motion.h1>
+            <motion.div
+              className="mt-8 max-w-xl text-[#3d3530]"
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ ...sectionEase, delay: 0.7 }}
+            >
+              <p className="font-body text-xs uppercase tracking-[0.35em] leading-loose">
+                Bold scale. Quiet luxury. Photographed details that define an entire evening.
+              </p>
+            </motion.div>
+            <motion.div
+              className="mt-12"
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ ...sectionEase, delay: 0.85 }}
+            >
+              <Button to="/inquire" variant="primary">
+                Begin the inquiry
+              </Button>
+            </motion.div>
           </div>
         </div>
-      </SectionWrapper>
+      </motion.section>
 
-      <SectionWrapper className="bg-cream-secondary">
-        <p className="section-label mb-3 text-center">Featured Work</p>
-        <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl text-ink text-center mb-12 md:mb-16">
-          A closer look.
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-8">
-          {featuredImages.map((img, i) => (
-            <div key={i} className="group">
-              <div className="aspect-[3/4] overflow-hidden bg-[#f5f2ee]">
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  loading="lazy"
-                  className="w-full h-full object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
-                />
-              </div>
+      <motion.section
+        className="relative overflow-hidden bg-cream py-24 md:py-32"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.25 }}
+        variants={slideLeft}
+        transition={sectionEase}
+      >
+        <div className="absolute right-0 top-0 h-[60%] w-[55%] -translate-y-1/4 translate-x-1/6 rounded-bl-[120px] bg-[#F3EEE8] opacity-90" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative">
+          <div className="grid gap-12 lg:grid-cols-[minmax(360px,1fr)_minmax(420px,560px)] items-end">
+            <div className="relative z-10">
+              <span className="section-label mb-4 inline-block">Our Philosophy</span>
+              <motion.h2
+                className="font-heading text-4xl md:text-[4.6rem] text-ink leading-[0.95] max-w-2xl"
+                variants={slideLeft}
+              >
+                Not signage.
+                <br />
+                <em>Art for your wedding day.</em>
+              </motion.h2>
+              <motion.p
+                className="mt-8 max-w-xl text-ink-secondary font-body text-sm md:text-base leading-relaxed"
+                variants={fadeUp}
+              >
+                Every piece is conceived as a visual destination — custom-crafted for your venue, your palette, and the way your guests will remember the day.
+              </motion.p>
+              <motion.p className="mt-6 max-w-xl text-ink-secondary font-body text-sm md:text-base leading-relaxed" variants={fadeUp}>
+                We select just a few weddings each season so every commission receives the attention, materials, and finishing that make it feel truly elevated.
+              </motion.p>
+              <motion.div className="mt-10" variants={fadeUp}>
+                <Button to="/about" variant="primary">
+                  Learn more
+                </Button>
+              </motion.div>
             </div>
-          ))}
-        </div>
 
-        <div className="flex justify-center mt-12 md:mt-14">
-          <Button to="/signature-pieces" variant="ghost">
-            View Full Gallery
-          </Button>
+            <motion.div className="relative overflow-hidden rounded-[2rem] border border-border bg-[#f5f2ee] shadow-[0_50px_120px_rgba(26,23,20,0.08)]" variants={slideRight}>
+              <img
+                src="/philosophy.png"
+                alt="Mr. & Mrs. Rodriguez welcome sign on gold easel with champagne roses and candlelight"
+                loading="lazy"
+                className="h-full w-full object-cover object-center"
+              />
+              <div className="absolute left-0 top-1/2 w-full -translate-y-1/2 border-t border-cream/60" />
+            </motion.div>
+          </div>
         </div>
-      </SectionWrapper>
+      </motion.section>
 
-      <section className="py-20 md:py-28 lg:py-40 bg-cream">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8 mb-12 md:mb-16 lg:mb-20">
-            <div>
-              <p className="section-label mb-4">What We Create</p>
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl text-ink leading-tight max-w-xs">
-                Every piece,<br />made for you.
+      <motion.section
+        className="bg-cream-secondary py-24 md:py-32"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.25 }}
+        variants={fadeUp}
+        transition={sectionEase}
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid gap-20 lg:grid-cols-[1.1fr_0.9fr] items-start">
+            <div className="space-y-4">
+              <span className="section-label">Featured Work</span>
+              <h2 className="font-heading text-5xl md:text-[5.6rem] text-ink leading-tight">
+                A closer look
+                <span className="block text-accent">at our most iconic installs.</span>
               </h2>
             </div>
-            <div className="md:pb-1">
-              <Button to="/services" variant="ghost">
-                All Services
-              </Button>
-            </div>
+
+            <p className="text-ink-secondary font-body text-base leading-relaxed max-w-2xl">
+              These images are not just product shots — they are composed scenes that show how our work anchors a wedding’s ambiance and becomes the detail guests remember most.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 sm:gap-8 md:gap-5 lg:gap-7">
-            {services.map((service, i) => (
-              <div key={i} className="group flex flex-col">
-                <div className="order-1 md:order-2 pt-0 md:pt-6 border-t border-border md:mt-6 mb-5 md:mb-0">
-                  <h3 className="font-heading text-xl md:text-2xl text-ink mb-2 leading-snug">
-                    {service.title}
-                  </h3>
-                  <p className="text-ink-secondary font-body text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
+          <div className="mt-16 grid gap-6 lg:grid-cols-3 lg:auto-rows-fr">
+            <motion.div
+              className="relative overflow-hidden rounded-[2rem] bg-[#F3EEE8] shadow-[0_35px_80px_rgba(26,23,20,0.08)] lg:col-span-2 lg:row-span-2"
+              variants={scaleUp}
+            >
+              <img
+                src="/welcome-1.png"
+                alt="Zawisza Wedding welcome sign — black frame with gold picture light and peach roses"
+                loading="lazy"
+                className="h-full w-full object-contain object-center"
+              />
+            </motion.div>
+            <motion.div className="overflow-hidden rounded-[2rem] bg-[#F3EEE8] shadow-[0_35px_80px_rgba(26,23,20,0.08)]" variants={scaleUp}>
+              <img
+                src="/the-cocktail-call-1.png"
+                alt="The Cocktail Call — custom cocktail wall installation with couple"
+                loading="lazy"
+                className="h-full w-full object-contain object-center"
+              />
+            </motion.div>
+            <motion.div className="overflow-hidden rounded-[2rem] bg-[#F3EEE8] shadow-[0_35px_80px_rgba(26,23,20,0.08)]" variants={scaleUp}>
+              <img
+                src="/siphappens.png"
+                alt="Sip Happens Find Your Seat — illuminated wavy arch seating display with champagne flutes"
+                loading="lazy"
+                className="h-full w-full object-contain object-center"
+              />
+            </motion.div>
+          </div>
 
-                <div className="order-2 md:order-1 aspect-[3/4] overflow-hidden">
+          <div className="mt-14 flex justify-end">
+            <Button to="/signature-pieces" variant="ghost">
+              View Full Gallery
+            </Button>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        className="relative overflow-hidden bg-cream py-24 md:py-32"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeUp}
+        transition={sectionEase}
+      >
+        <div className="absolute left-0 top-0 h-32 w-full bg-cream-secondary skew-y-[-4deg] origin-top-left" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] items-start">
+            <div className="relative z-10 rounded-[2rem] border border-border bg-white/60 p-10 shadow-[0_30px_80px_rgba(26,23,20,0.08)]">
+              <span className="section-label mb-4 inline-block">What We Create</span>
+              <h2 className="font-heading text-5xl md:text-[5.4rem] text-ink leading-tight">
+                Every piece
+                <br />
+                made for you.
+              </h2>
+              <div className="mt-8 space-y-6">
+                {services.map((service) => (
+                  <div key={service.title} className="flex gap-5 items-start">
+                    <div className="mt-1 h-3 w-3 rounded-full bg-accent" />
+                    <div>
+                      <h3 className="font-heading text-2xl text-ink mb-2">{service.title}</h3>
+                      <p className="text-ink-secondary font-body text-sm leading-relaxed">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
+              {services.map((service, index) => (
+                <div key={service.title} className={`overflow-hidden rounded-[2rem] bg-[#F3EEE8] ${index === 1 ? 'md:translate-y-16' : ''}`}>
                   <img
                     src={service.image}
                     alt={service.title}
                     loading="lazy"
+                    className="h-full w-full object-cover"
                     style={{ objectPosition: service.position }}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
                   />
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        className="bg-ink py-24 md:py-32"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeIn}
+        transition={sectionEase}
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+          <span className="text-accent text-xs tracking-[0.4em] uppercase">How It Works</span>
+          <h2 className="font-heading text-5xl md:text-[6rem] text-cream leading-tight mt-6">
+            A process designed to feel effortless.
+          </h2>
+
+          <div className="mt-16 grid gap-8 md:grid-cols-4">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.number}
+                className="rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ ...sectionEase, delay: index * 0.08 }}
+              >
+                <p className="font-heading text-6xl text-accent mb-4">{step.number}</p>
+                <h3 className="font-heading text-2xl text-cream mb-3">{step.title}</h3>
+                <p className="text-cream/60 font-body text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <SectionWrapper className="bg-ink">
-        <p className="text-accent text-xs tracking-widest uppercase font-body mb-5 text-center">
-          How It Works
-        </p>
-        <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl text-cream text-center mb-12 md:mb-16">
-          A seamless creative process.
-        </h2>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-4">
-          {steps.map((step, i) => (
-            <div key={i} className="text-center px-2">
-              <p className="font-heading text-accent text-3xl sm:text-4xl md:text-5xl mb-4 md:mb-5 leading-none">
-                {step.number}
-              </p>
-              <h3 className="font-heading text-cream text-base sm:text-lg mb-2 md:mb-3">{step.title}</h3>
-              <p className="text-cream/50 font-body text-xs sm:text-sm leading-relaxed">
-                {step.description}
-              </p>
+      <motion.section
+        className="relative overflow-hidden bg-cream-secondary py-24 md:py-32"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeUp}
+        transition={sectionEase}
+      >
+        <div className="absolute right-0 top-0 h-[50%] w-[45%] -translate-y-1/2 rounded-bl-[160px] bg-[#FAF7F2]" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative">
+          <div className="grid gap-10 lg:grid-cols-2 items-start">
+            <div className="space-y-6">
+              <span className="section-label">In Their Words</span>
+              <h2 className="font-heading text-5xl md:text-[5.4rem] text-ink leading-tight">
+                What our couples say.
+              </h2>
             </div>
-          ))}
+            <p className="text-ink-secondary font-body text-base leading-relaxed max-w-xl">
+              Our work is designed to be felt, photographed, and remembered. These moments show how signage becomes part of the story.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-8 md:grid-cols-2">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial.name}
+                className="relative overflow-hidden rounded-[2rem] bg-cream p-10 shadow-[0_32px_80px_rgba(26,23,20,0.08)]"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ ...sectionEase, delay: index * 0.12 }}
+              >
+                <span className="absolute left-0 top-0 h-1 w-24 bg-accent" />
+                <p className="font-heading italic text-ink text-xl leading-relaxed mb-8">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+                <div>
+                  <p className="text-ink font-body text-sm font-semibold">{testimonial.name}</p>
+                  <p className="text-accent text-xs uppercase tracking-[0.35em] mt-2">{testimonial.event}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </SectionWrapper>
+      </motion.section>
 
-      <SectionWrapper className="bg-cream-secondary">
-        <p className="section-label mb-3 text-center">In Their Words</p>
-        <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl text-ink text-center mb-12 md:mb-14">
-          What our couples say.
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-          {testimonials.map((t, i) => (
-            <div key={i} className="bg-cream p-8 sm:p-10 md:p-12 border border-border">
-              <p className="font-heading italic text-ink text-base sm:text-lg md:text-xl leading-relaxed mb-6 md:mb-8">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div>
-                <p className="text-ink font-body text-sm tracking-wide">{t.name}</p>
-                <p className="text-ink-secondary font-body text-xs tracking-wide mt-1">{t.event}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionWrapper>
-
-      <section
+      <motion.section
         className="relative overflow-hidden bg-[#141210]"
-        style={{ minHeight: 'clamp(640px, 92vw, 820px)' }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeIn}
+        transition={sectionEase}
       >
         <div className="absolute inset-0">
-          <img
+          <motion.img
             src="/wedding-party.png"
             alt="Wedding party"
-            className="w-full h-full object-contain md:object-cover"
-            style={{
-              objectPosition: 'center top',
-              filter: 'contrast(1.08) brightness(0.96)',
-            }}
+            className="h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ ...sectionEase, duration: 1.2, delay: 0.2 }}
           />
-          <div
+          <motion.div
             className="absolute inset-0"
             style={{
               background:
                 'linear-gradient(to bottom, rgba(20,18,16,0) 0%, rgba(20,18,16,0.08) 40%, rgba(20,18,16,0.58) 72%, rgba(20,18,16,0.88) 100%)',
             }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...sectionEase, delay: 0.3 }}
           />
         </div>
 
-        <div
-          className="relative z-10 flex flex-col justify-end"
-          style={{ minHeight: 'clamp(640px, 92vw, 820px)' }}
-        >
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center w-full pb-12 sm:pb-20 md:pb-28">
-            <p className="text-accent text-xs tracking-widest uppercase font-body mb-4 md:mb-5">
+        <div className="relative z-10 flex min-h-[clamp(640px,92vw,820px)] items-end">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 text-center">
+            <motion.p className="text-accent text-xs tracking-[0.35em] uppercase mb-4" variants={fadeUp}>
               Limited Availability
-            </p>
-            <h2 className="font-heading text-white text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-tight mb-5 md:mb-8 max-w-2xl mx-auto">
+            </motion.p>
+            <motion.h2
+              className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight max-w-3xl mx-auto"
+              variants={fadeUp}
+            >
               Your wedding day deserves this level of detail.
-            </h2>
-            <p className="text-white/75 font-body text-sm sm:text-base mb-8 md:mb-10 max-w-sm sm:max-w-md mx-auto leading-relaxed">
+            </motion.h2>
+            <motion.p className="mt-6 max-w-xl mx-auto text-white/75 font-body text-base leading-relaxed" variants={fadeUp}>
               We accept a limited number of commissions each season. Begin your inquiry today.
-            </p>
-            <Button to="/inquire" variant="white">
-              Start Your Project
-            </Button>
+            </motion.p>
+            <motion.div className="mt-10" variants={fadeUp}>
+              <Button to="/inquire" variant="white">
+                Start Your Project
+              </Button>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
     </main>
   );
 }

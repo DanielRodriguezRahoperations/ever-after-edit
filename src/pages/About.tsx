@@ -1,9 +1,3 @@
-// =========================================================
-// ABOUT PAGE — LOCKED. DO NOT MODIFY.
-// All layouts, images, and text on this page are client-approved.
-// Do NOT replace images, restructure sections, or add/remove content.
-// Edit in place only, and only when explicitly instructed.
-// =========================================================
 import SectionWrapper from '../components/SectionWrapper';
 import Button from '../components/Button';
 
