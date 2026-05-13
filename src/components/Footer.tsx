@@ -39,6 +39,17 @@ export default function Footer() {
             Bespoke signage for discerning couples.
           </p>
         </div>
+        <p className="mt-6 text-center text-[11px] font-body tracking-wide opacity-40">
+          Designed by{' '}
+          <a
+            href="https://www.rahoperations.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:opacity-70 transition-opacity duration-300"
+          >
+            RAH Operations
+          </a>
+        </p>
       </div>
     </footer>
   );
